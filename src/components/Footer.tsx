@@ -18,16 +18,16 @@ import {
 export const Footer: React.FC = () => {
   const footerLinks = {
     explore: [
-      { name: 'Browse Artworks', href: '#' },
-      { name: 'Featured Artists', href: '#' },
-      { name: 'Regional Art', href: '#' },
-      { name: 'Art Styles', href: '#' }
+      { name: 'Browse Gallery', href: '/gallery' },
+      { name: 'Featured Artists', href: '/artists' },
+      { name: 'Art Styles', href: '/styles' },
+      { name: 'About Us', href: '/about' }
     ],
     community: [
-      { name: 'Join as Artist', href: '#' },
-      { name: 'Art Collectors', href: '#' },
-      { name: 'Cultural Events', href: '#' },
-      { name: 'Artist Stories', href: '#' }
+      { name: 'Artist Registration', href: '/auth/register' },
+      { name: 'Upload Artwork', href: '/upload' },
+      { name: 'Cultural Stories', href: '/stories' },
+      { name: 'Help Center', href: '/help' }
     ],
     resources: [
       { name: 'Learning Center', href: '#' },

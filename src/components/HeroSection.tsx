@@ -1,8 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import { useStats } from '../hooks/useStats';
+import { Link } from 'react-router-dom';
 
 export const HeroSection: React.FC = () => {
+  const stats = useStats();
   return (
     <section className="min-h-screen relative overflow-hidden bg-gradient-to-br from-orange-900 via-red-900 to-amber-900">
       {/* Animated Background Patterns */}
@@ -63,15 +66,11 @@ export const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <button className="group bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center hover:shadow-2xl transition-all transform hover:scale-105">
+              <Link to="/auth/register" className="group bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center hover:shadow-2xl transition-all transform hover:scale-105">
                 Join the Movement
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              
-              <button className="group border-2 border-white/50 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center hover:bg-white/10 transition-all">
-                <Play className="mr-2 w-5 h-5" />
-                Explore as Guest
-              </button>
+              </Link>
+
             </motion.div>
 
             {/* Stats */}
@@ -82,9 +81,9 @@ export const HeroSection: React.FC = () => {
               className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-white/20"
             >
               {[
-                { number: '500+', label: 'Artists' },
-                { number: '2K+', label: 'Artworks' },
-                { number: '10K+', label: 'Visitors' }
+                { number: stats.totalArtists + '+', label: 'Artists' },
+                { number: stats.totalArtworks + '+', label: 'Artworks' },
+                { number: stats.totalRegions + '+', label: 'Regions' }
               ].map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="text-2xl md:text-3xl font-bold text-amber-400">{stat.number}</div>
