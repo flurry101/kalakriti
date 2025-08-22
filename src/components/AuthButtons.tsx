@@ -19,6 +19,12 @@ export const AuthButtons = () => {
   return (
     <div className="flex space-x-4">
       <button
+        onClick={() => navigate('/signin?view=sign_up')}
+        className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-all"
+      >
+        Sign Up
+      </button>
+      <button
         onClick={() => navigate('/signin')}
         className="px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-orange-500 to-red-600 rounded-md hover:shadow-lg transition-all"
       >

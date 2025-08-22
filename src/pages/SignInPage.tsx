@@ -4,9 +4,12 @@ import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { X } from 'lucide-react';
+import { useState } from 'react';
 
 export const SignInPage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useState(() => new URLSearchParams(window.location.search));
+  const initialView = searchParams.get('view') === 'sign_up' ? 'sign_up' : 'sign_in';
 
   return (
     <motion.div
@@ -35,6 +38,7 @@ export const SignInPage = () => {
 
         <Auth
           supabaseClient={supabase}
+          view={initialView}
           appearance={{
             theme: ThemeSupa,
             variables: {
@@ -43,12 +47,43 @@ export const SignInPage = () => {
                   brand: '#f97316',
                   brandAccent: '#ea580c',
                 },
+                borderWidths: {
+                  buttonBorderWidth: '1px',
+                  inputBorderWidth: '1px',
+                },
+                radii: {
+                  borderRadiusButton: '8px',
+                  buttonBorderRadius: '8px',
+                  inputBorderRadius: '8px',
+                },
               },
             },
           }}
           providers={['google']}
           redirectTo={`${window.location.origin}/auth/callback`}
           theme="light"
+          showLinks={true}
+          magicLink={true}
+          localization={{
+            variables: {
+              sign_in: {
+                email_label: 'Email address',
+                password_label: 'Password',
+                button_label: 'Sign in',
+                loading_button_label: 'Signing in...',
+                social_provider_text: 'Sign in with {{provider}}',
+                link_text: "Don't have an account? Sign up"
+              },
+              sign_up: {
+                email_label: 'Email address',
+                password_label: 'Create a Password',
+                button_label: 'Sign up',
+                loading_button_label: 'Creating account...',
+                social_provider_text: 'Sign up with {{provider}}',
+                link_text: 'Already have an account? Sign in'
+              }
+            }
+          }}
         />
       </motion.div>
     </motion.div>

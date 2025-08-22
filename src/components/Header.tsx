@@ -5,9 +5,10 @@ import { Link } from 'react-router-dom';
 import { AuthButtons } from './AuthButtons';
 
 const navItems = [
-  { name: 'Gallery', href: '#gallery' },
-  { name: 'Discover', href: '#map' },
-  { name: 'Stories', href: '#stories' },
+  { name: 'Home', href: '/#home' },
+  { name: 'Discover', href: '/#map' },
+  { name: 'Gallery', href: '/#gallery' },
+  { name: 'Stories', href: '/#stories' },
   { name: 'About', href: '/about' }
 ];
 
@@ -23,12 +24,7 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = [
-    { name: 'Explore', href: '#explore' },
-    { name: 'Artists', href: '#artists' },
-    { name: 'Stories', href: '#stories' },
-    { name: 'About', href: '/about' }
-  ];
+  // Navigation items are defined above
 
   return (
     <header className={`fixed top-0 w-full z-40 transition-all duration-300 ${

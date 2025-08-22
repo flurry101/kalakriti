@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 export const AboutPage = () => {
+  const navigate = useNavigate();
   const features = [
     {
       title: "Digital Preservation",
@@ -83,7 +85,10 @@ export const AboutPage = () => {
             Whether you're an artist, art enthusiast, or supporter of cultural preservation,
             be part of this unique initiative to digitize and celebrate India's artistic heritage.
           </p>
-          <button className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-8 py-3 rounded-full font-medium hover:shadow-lg transition-all">
+          <button 
+            onClick={() => navigate('/signin')}
+            className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-8 py-3 rounded-full font-medium hover:shadow-lg transition-all"
+          >
             Get Started
           </button>
         </div>

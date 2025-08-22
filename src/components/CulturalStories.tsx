@@ -62,7 +62,7 @@ export const CulturalStories: React.FC = () => {
     {
       id: '1',
       title: 'The Last Madhubani Master',
-      excerpt: 'In a small village in Bihar, 75-year-old Sita Devi continues to paint the ancient stories of her ancestors, preserving a thousand-year-old tradition.',
+      excerpt: 'KalaKriti has given my ancestral art a global stage. The world now sees the stories my grandmother used to paint.',
       author: 'Rajesh Kumar',
       location: 'Bihar, India',
       date: 'March 2024',
@@ -72,7 +72,7 @@ export const CulturalStories: React.FC = () => {
     {
       id: '2',
       title: 'Revival of Kalamkari',
-      excerpt: 'Young entrepreneurs are breathing new life into the ancient art of Kalamkari, bringing it to global markets while respecting traditional techniques.',
+      excerpt: 'For the first time, I feel connected to a community that understands and values my craft. This platform is a lifeline for artisans like me.',
       author: 'Priya Nair',
       location: 'Andhra Pradesh, India',
       date: 'February 2024',
@@ -82,7 +82,7 @@ export const CulturalStories: React.FC = () => {
     {
       id: '3',
       title: 'Digital Preservation Project',
-      excerpt: 'How technology is helping document and preserve endangered folk art forms before they disappear forever.',
+      excerpt: 'Preserving our heritage is a collective responsibility. KalaKriti is the digital campfire around which these timeless stories can be shared and kept alive.',
       author: 'Dr. Meera Sharma',
       location: 'Multiple Locations',
       date: 'January 2024',
@@ -183,10 +183,10 @@ export const CulturalStories: React.FC = () => {
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { label: 'Active Artists', value: 500, suffix: '+', icon: Users },
-              { label: 'Artworks Preserved', value: 2000, suffix: '+', icon: Users },
-              { label: 'Monthly Visitors', value: 10000, suffix: '+', icon: Users },
-              { label: 'Art Forms Documented', value: 25, suffix: '', icon: Users }
+              { label: 'Active Artists', value: 1, suffix: '+', icon: Users },
+              { label: 'Artworks Preserved', value: 1, suffix: '+', icon: Users },
+              { label: 'Monthly Visitors', value: 2, suffix: '+', icon: Users },
+              { label: 'Art Forms Documented', value: 5, suffix: '', icon: Users }
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -207,23 +207,7 @@ export const CulturalStories: React.FC = () => {
           </div>
         </motion.div>
 
-        {/* Call to Action */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-center mt-16"
-        >
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-            Become a Cultural Guardian
-          </h3>
-          <p className="text-lg text-gray-600 mb-8 max-w-2xl mx-auto">
-            Join our community of artists, collectors, and culture enthusiasts. Help preserve India's artistic legacy for future generations.
-          </p>
-          <button className="bg-gradient-to-r from-orange-500 to-red-600 text-white px-8 py-4 rounded-full font-semibold text-lg hover:shadow-xl transition-all transform hover:scale-105">
-            Sign Up Today
-          </button>
-        </motion.div>
+
       </div>
     </section>
   );

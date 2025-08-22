@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { SplashScreen } from './components/SplashScreen';
 import { Header } from './components/Header';
@@ -14,7 +14,6 @@ import { AuthCallback } from './pages/AuthCallback';
 import { AboutPage } from './pages/AboutPage';
 
 function MainContent() {
-  const location = useLocation();
   const [showSplash, setShowSplash] = useState(true);
 
   const handleSplashComplete = () => {
@@ -47,9 +46,7 @@ function MainContent() {
           </div>
         )}
       </AnimatePresence>
-      <AnimatePresence mode="wait">
-        {location.pathname === '/signin' && <SignInPage />}
-      </AnimatePresence>
+      {/* Auth modal is now handled by route */}
     </div>
   );
 }
@@ -59,10 +56,10 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<MainContent />}>
-            <Route path="about" element={<AboutPage />} />
-            <Route path="auth/callback" element={<AuthCallback />} />
-          </Route>
+          <Route path="/" element={<MainContent />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/signin" element={<SignInPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
