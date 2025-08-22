@@ -125,7 +125,7 @@ export const HeroSection: React.FC = () => {
                 className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl"
               >
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-800">2K+</div>
+                  <div className="text-2xl font-bold text-gray-800">0</div>
                   <div className="text-sm text-gray-600">Artworks</div>
                 </div>
               </motion.div>

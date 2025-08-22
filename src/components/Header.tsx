@@ -1,9 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X, Heart, Search, User } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Menu, X, Heart, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { AuthButtons } from './AuthButtons';
 
-export const Header: React.FC = () => {
+const navItems = [
+  { name: 'Gallery', href: '#gallery' },
+  { name: 'Discover', href: '#map' },
+  { name: 'Stories', href: '#stories' },
+  { name: 'About', href: '/about' }
+];
+
+export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -19,7 +27,7 @@ export const Header: React.FC = () => {
     { name: 'Explore', href: '#explore' },
     { name: 'Artists', href: '#artists' },
     { name: 'Stories', href: '#stories' },
-    { name: 'About', href: '#about' }
+    { name: 'About', href: '/about' }
   ];
 
   return (

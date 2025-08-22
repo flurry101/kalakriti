@@ -30,10 +30,18 @@ function MainContent() {
           <div key="main">
             <Header />
             <main>
-              <HeroSection />
-              <ArtCarousel />
-              <InteractiveMap />
-              <CulturalStories />
+              <section id="home">
+                <HeroSection />
+              </section>
+              <section id="map">
+                <InteractiveMap />
+              </section>              
+              <section id="gallery">
+                <ArtCarousel />
+              </section>
+              <section id="stories">
+                <CulturalStories />
+              </section>
             </main>
             <Footer />
           </div>
@@ -51,9 +59,10 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/auth/callback" element={<AuthCallback />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="*" element={<MainContent />} />
+          <Route path="/" element={<MainContent />}>
+            <Route path="about" element={<AboutPage />} />
+            <Route path="auth/callback" element={<AuthCallback />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </AuthProvider>
