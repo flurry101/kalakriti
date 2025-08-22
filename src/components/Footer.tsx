@@ -21,11 +21,12 @@ export const Footer: FC = () => {
       { name: 'Discover', href: '/#map' },
       { name: 'Gallery', href: '/#gallery' },
       { name: 'Stories', href: '/#stories' },
-      { name: 'About', href: '/about' }
     ],
     community: [
       { name: 'Join Movement', href: '/signin?view=sign_up' },
-      { name: 'Art Styles', href: '/art-styles' },
+    ],
+    support: [
+      { name: 'About', href: '/about' },
     ]
   };
 
