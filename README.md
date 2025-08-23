@@ -4,7 +4,7 @@
 
 Welcome to **Kalakriti**, a digital platform dedicated to preserving, promoting, and engaging with Indian folk art. Our mission is to empower artists by providing them a space to showcase their creativity and connect with a global audience.
 
----
+
 
 ## 📜 **Table of Contents**
 
