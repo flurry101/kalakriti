@@ -4,10 +4,6 @@
 
 Welcome to **KalaKriti**, a digital platform dedicated to preserving, promoting, and engaging with Indian folk art. Our mission is to empower artists by providing them a space to showcase their creativity and connect with a global audience.
 
-<p align="left">
-  <img src="https://readme-typing-svg.demolab.com?font=fira+code&size=24&duration=3000&random=true&pause=2500&color=00F7FF&center=true&vCenter=true&width=460&lines=KalaKriti;कलाकृति;ಕಲಾಕೃತಿ;కళాకృతి" alt="Typing SVG" />
-</p>
-
 ## 📜 **Table of Contents**
 
 - [**KalaKriti: Celebrating Indian Folk Art** 🎨](#kalakriti-celebrating-indian-folk-art-)
@@ -126,7 +122,7 @@ npm run build
 
 ## 🤝 **Contributions**
 
-We welcome contributions to **Kalakriti**! Whether it's reporting bugs, suggesting new features, or submitting code, your input is invaluable. To contribute:
+We welcome contributions to **KalaKriti**! Whether it's reporting bugs, suggesting new features, or submitting code, your input is invaluable. To contribute:
 
 * **Fork the repository** and create a new branch.
 * **Make changes**, following the project guidelines.
