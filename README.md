@@ -130,7 +130,7 @@ We welcome contributions to **Kalakriti**! Whether it's reporting bugs, suggesti
 * **Make changes**, following the project guidelines.
 * **Submit a pull request** with a detailed explanation of your changes.
 
-For detailed instructions, please refer to our [Contributing Guide](CONTRIBUTING.md).
+For detailed instructions, please refer to our [Contributing Guide](Contributing.md).
 
 Thank you for helping us bring Indian folk art to the world!
 
@@ -138,7 +138,7 @@ Thank you for helping us bring Indian folk art to the world!
 
 ## 🔒 **License**
 
-This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the **MIT License**. See the [LICENSE](LICENSE.md) file for more details.
 
 ---
 
