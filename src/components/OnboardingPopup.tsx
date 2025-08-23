@@ -49,28 +49,49 @@ export const OnboardingPopup: React.FC<OnboardingPopupProps> = ({ isOpen, onClos
     
     setLoading(true);
     try {
-      const { error } = await supabase
+      // First, try to insert the profile
+      const { error: insertError } = await supabase
         .from('profiles')
-        .upsert({
+        .insert({
           id: user.id,
           username: formData.username,
           full_name: formData.full_name,
-          bio: formData.bio,
+          bio: formData.bio || '',
           is_artist: formData.is_artist,
           art_styles: formData.art_styles,
-          location: formData.location,
+          location: formData.location || '',
+          created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         });
 
-      if (error) throw error;
+      // If insert fails due to existing record, try update
+      if (insertError && insertError.code === '23505') {
+        const { error: updateError } = await supabase
+          .from('profiles')
+          .update({
+            username: formData.username,
+            full_name: formData.full_name,
+            bio: formData.bio || '',
+            is_artist: formData.is_artist,
+            art_styles: formData.art_styles,
+            location: formData.location || '',
+            updated_at: new Date().toISOString(),
+          })
+          .eq('id', user.id);
+
+        if (updateError) throw updateError;
+      } else if (insertError) {
+        throw insertError;
+      }
       
       // Close the popup after successful save
       setTimeout(() => {
         onClose();
       }, 500);
     } catch (error) {
-      console.error('Error updating profile:', error);
-      alert('Failed to save profile. Please try again.');
+      console.error('Error saving profile:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Please try again.';
+      alert(`Failed to save profile: ${errorMessage}`);
     } finally {
       setLoading(false);
     }

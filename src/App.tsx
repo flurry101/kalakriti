@@ -17,6 +17,7 @@ import { ArtworkDetailPage } from './pages/artwork/ArtworkDetailPage';
 import { ArtworkUpload } from './components/artwork/ArtworkUpload';
 import { ProfilePage } from './pages/profile/ProfilePage';
 import { ArtEducationPage } from './pages/ArtEducationPage';
+import { CollectionsPage } from './pages/CollectionsPage';
 
 function MainContent() {
   const [showSplash, setShowSplash] = useState(true);
@@ -70,6 +71,7 @@ function App() {
           <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
           <Route path="/art-education" element={<ArtEducationPage />} />
+          <Route path="/collections" element={<CollectionsPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

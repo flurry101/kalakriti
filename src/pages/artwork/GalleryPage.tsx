@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { FcLike, FcComments } from 'react-icons/fc'; // Importing the icons
+import { User, Palette, Heart, Plus } from 'lucide-react'; // Import icons
 import { SearchBar } from '../../components/artwork/SearchBar';
 import { FilterBar } from '../../components/artwork/FilterBar';
 import { Header } from '../../components/Header'; // Import Header
@@ -216,16 +217,78 @@ export const GalleryPage = () => {
     <div className="hidden lg:block w-64 bg-gray-800 text-white p-4 rounded-lg shadow-md">
       {user ? (
         <>
-          <img
-            src={user.user_metadata?.avatar_url || '/default-avatar.jpg'}
-            alt="User Avatar"
-            className="w-16 h-16 rounded-full mx-auto mb-4"
-          />
-          <h2 className="text-xl text-center">{user.user_metadata?.full_name || user.email}</h2>
+          <div className="text-center mb-6">
+            <img
+              src={user.user_metadata?.avatar_url || '/default-avatar.jpg'}
+              alt="User Avatar"
+              className="w-16 h-16 rounded-full mx-auto mb-3"
+            />
+            <h2 className="text-lg font-semibold">{user.user_metadata?.full_name || user.email}</h2>
+            <p className="text-gray-300 text-sm">@{user.user_metadata?.username || 'user'}</p>
+          </div>
+          
+          {/* Navigation Links */}
+          <nav className="space-y-2">
+            <Link
+              to={`/profile/${user.id}`}
+              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors group"
+            >
+              <User className="w-5 h-5 text-orange-400 group-hover:text-orange-300" />
+              <span className="group-hover:text-white">My Profile</span>
+            </Link>
+            
+            <Link
+              to={`/profile/${user.id}`}
+              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors group"
+            >
+              <Palette className="w-5 h-5 text-orange-400 group-hover:text-orange-300" />
+              <span className="group-hover:text-white">My Portfolio</span>
+            </Link>
+            
+            <Link
+              to="/collections"
+              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors group"
+            >
+              <Heart className="w-5 h-5 text-orange-400 group-hover:text-orange-300" />
+              <span className="group-hover:text-white">My Collections</span>
+            </Link>
+            
+            <Link
+              to="/artwork/new"
+              className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors group"
+            >
+              <Plus className="w-5 h-5 text-orange-400 group-hover:text-orange-300" />
+              <span className="group-hover:text-white">Upload Artwork</span>
+            </Link>
+          </nav>
+          
+          {/* Stats */}
+          <div className="mt-6 pt-4 border-t border-gray-600">
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div>
+                <p className="text-2xl font-bold text-orange-400">0</p>
+                <p className="text-xs text-gray-400">Artworks</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-orange-400">0</p>
+                <p className="text-xs text-gray-400">Likes</p>
+              </div>
+            </div>
+          </div>
         </>
       ) : (
         <div className="text-center">
-          <p className="text-lg">Guest</p>
+          <div className="w-16 h-16 bg-gray-600 rounded-full mx-auto mb-4 flex items-center justify-center">
+            <User className="w-8 h-8 text-gray-400" />
+          </div>
+          <p className="text-lg font-semibold mb-2">Guest</p>
+          <p className="text-gray-400 text-sm mb-4">Sign in to access your profile and collections</p>
+          <Link
+            to="/signin"
+            className="inline-block bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg transition-colors"
+          >
+            Sign In
+          </Link>
         </div>
       )}
     </div>
