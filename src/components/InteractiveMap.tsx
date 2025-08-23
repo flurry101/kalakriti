@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from './ui/card';
 import { Badge } from './ui/badge';
 import { MAP_REGIONS } from '../constants';
 import type { MapRegion } from '../types';
+import { motion } from 'framer-motion';
 
 export function InteractiveMap() {
   const [activeRegion, setActiveRegion] = useState<MapRegion | null>(null);

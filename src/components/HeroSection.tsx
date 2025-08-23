@@ -66,7 +66,7 @@ export const HeroSection: React.FC = () => {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4"
             >
-              <Link to="/auth/register" className="group bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center hover:shadow-2xl transition-all transform hover:scale-105">
+              <Link to="/signin?view=sign_up" className="group bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center hover:shadow-2xl transition-all transform hover:scale-105">
                 Join the Movement
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -120,21 +120,11 @@ export const HeroSection: React.FC = () => {
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl"
               >
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">🎨</span>
+                <div className="w-12 h-12 bg-gradient-to-br from-white-400 to-grey-500 rounded-xl flex items-center justify-center">
+                  <span className="text-white font-bold text-lg">🧡</span>
                 </div>
               </motion.div>
 
-              <motion.div
-                animate={{ y: [10, -10, 10] }}
-                transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-2xl p-4 shadow-xl"
-              >
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-gray-800">0</div>
-                  <div className="text-sm text-gray-600">Artworks</div>
-                </div>
-              </motion.div>
             </div>
           </motion.div>
         </div>

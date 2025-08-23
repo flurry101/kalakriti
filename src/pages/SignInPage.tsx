@@ -15,7 +15,7 @@ export const SignInPage = () => {
       if (event === 'SIGNED_IN') {
         setAuthStatus('success');
         setTimeout(() => {
-          navigate('/feed');
+          navigate('/gallery');
         }, 2000);
       } else if (event === 'SIGNED_OUT') {
         setAuthStatus('error');
@@ -111,7 +111,7 @@ export const SignInPage = () => {
                 button_label: 'Sign in',
                 loading_button_label: 'Signing in...',
                 social_provider_text: 'Sign in with {{provider}}',
-                link_text: "Don't have an account? Sign up"
+                link_text: 'Already have an account? Sign in'
               },
               sign_up: {
                 email_label: 'Email address',
@@ -119,7 +119,7 @@ export const SignInPage = () => {
                 button_label: 'Sign up',
                 loading_button_label: 'Creating account...',
                 social_provider_text: 'Sign up with {{provider}}',
-                link_text: 'Already have an account? Sign in'
+                link_text: "Don't have an account? Sign up"
               }
             }
           }}

@@ -183,8 +183,8 @@ export const CulturalStories: React.FC = () => {
 
           <div className="grid md:grid-cols-4 gap-8">
             {[
-              { label: 'Active Artists', value: 1, suffix: '+', icon: Users },
-              { label: 'Artworks Preserved', value: 1, suffix: '+', icon: Users },
+              { label: 'Active Artists', value: 3, suffix: '+', icon: Users },
+              { label: 'Artworks Preserved', value: 3, suffix: '+', icon: Users },
               { label: 'Monthly Visitors', value: 2, suffix: '+', icon: Users },
               { label: 'Art Forms Documented', value: 5, suffix: '', icon: Users }
             ].map((stat, index) => (

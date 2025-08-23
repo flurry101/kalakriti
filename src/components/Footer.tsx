@@ -21,12 +21,14 @@ export const Footer: FC = () => {
       { name: 'Stories', href: '/#stories' },
     ],
     community: [
-      { name: 'Join Movement', href: '/signin?view=sign_up' },
+      { name: 'Join as Artist', href: '/signin?view=sign_up' },
+      { name: 'Art Collectors', href: '/signin?view=sign_up' },
+      { name: 'Art Education', href: '/ArtEducation' },
     ],
   };
 
   const socialLinks = [
-    { icon: Github, href: '#', label: 'GitHub' },
+    { icon: Github, href: 'https://github.com/flurry101/kalakriti', label: 'GitHub' },
     { icon: Youtube, href: '#', label: 'YouTube' },
   ];
 

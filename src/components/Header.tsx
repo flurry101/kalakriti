@@ -62,16 +62,6 @@ export const Header = () => {
                 {item.name}
               </motion.a>
             ))}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
-              className={`p-2 rounded-full transition-colors ${
-                isScrolled ? 'text-gray-700 hover:bg-gray-100' : 'text-white hover:bg-white/10'
-              }`}
-            >
-              <Search className="w-5 h-5" />
-            </motion.button>
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
