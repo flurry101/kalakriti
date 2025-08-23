@@ -20,9 +20,7 @@ export const Footer: FC = () => {
       { name: 'Gallery', href: '/#gallery' },
       { name: 'Stories', href: '/#stories' },
     ],
-    community: [
-      { name: 'Join as Artist', href: '/signin?view=sign_up' },
-      { name: 'Art Collectors', href: '/signin?view=sign_up' },
+    Resources: [
       { name: 'Art Education', href: '/art-education' },
     ],
   };
@@ -117,7 +115,7 @@ export const Footer: FC = () => {
               Community
             </h3>
             <ul className="space-y-4">
-              {footerLinks.community.map((link) => (
+              {footerLinks.Resources.map((link) => (
                 <li key={link.name}>
                   <Link
                     to={link.href}
