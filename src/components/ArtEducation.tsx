@@ -356,9 +356,6 @@ export function ArtEducation({ onBackToHome }: ArtEducationProps) {
               Start your journey as an artist, collector, or cultural enthusiast.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-white text-orange-600 hover:bg-orange-50 px-8 py-6">
-                Start Learning
-              </Button>
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 px-8 py-6">
                 Join Community
               </Button>

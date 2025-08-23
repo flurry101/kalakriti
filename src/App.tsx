@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { SplashScreen } from './components/SplashScreen';
@@ -16,6 +16,7 @@ import { GalleryPage } from './pages/artwork/GalleryPage';
 import { ArtworkDetailPage } from './pages/artwork/ArtworkDetailPage';
 import { ArtworkUpload } from './components/artwork/ArtworkUpload';
 import { ProfilePage } from './pages/profile/ProfilePage';
+import { ArtEducationPage } from './pages/ArtEducationPage';
 
 function MainContent() {
   const [showSplash, setShowSplash] = useState(true);
@@ -68,6 +69,7 @@ function App() {
           <Route path="/artwork/new" element={<ArtworkUpload />} />
           <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
           <Route path="/profile/:id" element={<ProfilePage />} />
+          <Route path="/art-education" element={<ArtEducationPage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

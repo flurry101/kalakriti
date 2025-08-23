@@ -23,7 +23,7 @@ export const Footer: FC = () => {
     community: [
       { name: 'Join as Artist', href: '/signin?view=sign_up' },
       { name: 'Art Collectors', href: '/signin?view=sign_up' },
-      { name: 'Art Education', href: '/ArtEducation' },
+      { name: 'Art Education', href: '/art-education' },
     ],
   };
 

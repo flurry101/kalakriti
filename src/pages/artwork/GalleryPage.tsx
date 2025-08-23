@@ -1,17 +1,22 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { FcLike, FcComments } from 'react-icons/fc'; // Importing the icons
 import { SearchBar } from '../../components/artwork/SearchBar';
 import { FilterBar } from '../../components/artwork/FilterBar';
 import { Header } from '../../components/Header'; // Import Header
 import { Footer } from '../../components/Footer'; // Import Footer
+import { OnboardingPopup } from '../../components/OnboardingPopup';
+import { useAuth } from '../../context/AuthContext';
 
 interface Artwork {
   id: number;
   title: string;
   created_at: string;
   image_url: string;
+  user_id: string;
   artist: {
+    id: string;
     username: string;
     full_name: string;
     avatar_url: string;
@@ -34,8 +39,9 @@ export const GalleryPage = () => {
     region: '',
   });
   
-  // Profile state to simulate a logged-in user or guest
-  const [user, setUser] = useState<{ username: string; avatar_url: string } | null>(null);
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  
+  const { user } = useAuth();
 
   const fetchArtworks = useCallback(async () => {
     if (loading || !hasMore) return;
@@ -48,13 +54,13 @@ export const GalleryPage = () => {
       .from('artworks')
       .select(`
         *,
-        artist:profiles(username, full_name, avatar_url)
+        artist:profiles(id, username, full_name, avatar_url)
       `)
       .range(from, to)
       .order('created_at', { ascending: false });
 
     if (searchQuery) {
-      query = query.textSearch('title', searchQuery);
+      query = query.or(`title.ilike.%${searchQuery}%,description.ilike.%${searchQuery}%,style.ilike.%${searchQuery}%`);
     }
 
     if (filters.style) {
@@ -86,21 +92,110 @@ export const GalleryPage = () => {
   }, [page, searchQuery, filters, loading, hasMore]);
 
   useEffect(() => {
+    setArtworks([]);
+    setPage(0);
+    setHasMore(true);
+  }, [searchQuery, filters]);
+
+  useEffect(() => {
     fetchArtworks();
   }, [fetchArtworks]);
 
+  // Check if user needs onboarding
+  useEffect(() => {
+    const checkUserProfile = async () => {
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('username, full_name')
+          .eq('id', user.id)
+          .single();
+        
+        if (!profile || !profile.username || !profile.full_name) {
+          setShowOnboarding(true);
+        }
+      }
+    };
+
+    checkUserProfile();
+  }, [user]);
+
   const handleSearch = (query: string) => {
     setSearchQuery(query);
-    setArtworks([]);  // Reset artworks on new search
-    setPage(0);       // Reset to the first page
-    setHasMore(true); // Reset 'hasMore' for new search
   };
 
   const handleFilterChange = (newFilters: Filters) => {
     setFilters(newFilters);
-    setArtworks([]);  // Reset artworks on filter change
-    setPage(0);       // Reset to the first page
-    setHasMore(true); // Reset 'hasMore' for new filter
+  };
+
+  const handleLike = async (artworkId: number) => {
+    if (!user) {
+      alert('Please sign in to like artworks');
+      return;
+    }
+
+    try {
+      // Check if already liked
+      const { data: existingLike } = await supabase
+        .from('artwork_likes')
+        .select('id')
+        .eq('artwork_id', artworkId)
+        .eq('user_id', user.id)
+        .single();
+
+      if (existingLike) {
+        // Unlike
+        await supabase
+          .from('artwork_likes')
+          .delete()
+          .eq('artwork_id', artworkId)
+          .eq('user_id', user.id);
+      } else {
+        // Like
+        await supabase
+          .from('artwork_likes')
+          .insert({
+            artwork_id: artworkId,
+            user_id: user.id
+          });
+      }
+
+      // Refresh artworks to update like count
+      setArtworks([]);
+      setPage(0);
+      setHasMore(true);
+    } catch (error) {
+      console.error('Error handling like:', error);
+    }
+  };
+
+  const handleComment = async (artworkId: number) => {
+    if (!user) {
+      alert('Please sign in to comment on artworks');
+      return;
+    }
+
+    const comment = prompt('Add a comment:');
+    if (!comment) return;
+
+    try {
+      await supabase
+        .from('artwork_comments')
+        .insert({
+          artwork_id: artworkId,
+          user_id: user.id,
+          content: comment
+        });
+
+      alert('Comment added successfully!');
+      // Refresh artworks to update comment count
+      setArtworks([]);
+      setPage(0);
+      setHasMore(true);
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      alert('Failed to add comment');
+    }
   };
 
   const ProfileSidebar = () => (
@@ -108,11 +203,11 @@ export const GalleryPage = () => {
       {user ? (
         <>
           <img
-            src={user.avatar_url || '/default-avatar.jpg'}
+            src={user.user_metadata?.avatar_url || '/default-avatar.jpg'}
             alt="User Avatar"
             className="w-16 h-16 rounded-full mx-auto mb-4"
           />
-          <h2 className="text-xl text-center">{user.username}</h2>
+          <h2 className="text-xl text-center">{user.user_metadata?.full_name || user.email}</h2>
         </>
       ) : (
         <div className="text-center">
@@ -128,42 +223,59 @@ export const GalleryPage = () => {
       <Header />  {/* Header component here */}
 
       {/* Main content */}
-      <main className="flex-grow container mx-auto px-4 py-8 flex bg-orange-100">
+      <main className="flex-grow container mx-auto px-4 py-8 pt-24 flex flex-col lg:flex-row bg-orange-100">
         <ProfileSidebar />
 
-        <div className="flex-1 ml-8">
+        <div className="flex-1 lg:ml-8 mt-6 lg:mt-0">
           <div className="flex flex-col gap-6">
             <SearchBar onSearch={handleSearch} />
             <FilterBar onChange={handleFilterChange} />
             
-            {/* Masonry-style Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {/* Responsive Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {artworks.map((artwork) => (
-                <div key={artwork.id} className="relative group overflow-hidden rounded-lg shadow-lg bg-white">
+                <div key={artwork.id} className="relative group overflow-hidden rounded-lg shadow-lg bg-white aspect-square">
                   <img
                     src={artwork.image_url}
                     alt={artwork.title}
                     className="w-full h-full object-cover transition-transform duration-300 ease-in-out transform group-hover:scale-105"
+                    loading="lazy"
                   />
                   
-                  <div className="absolute bottom-4 left-4 right-4 p-2 bg-gradient-to-t from-black to-transparent opacity-60 group-hover:opacity-100 transition-opacity">
-                    <p className="text-white text-lg font-semibold">{artwork.title}</p>
-                    <p className="text-white text-sm">{artwork.artist.full_name}</p>
+                  <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <p className="text-white text-sm md:text-base font-semibold truncate">{artwork.title}</p>
+                    <Link
+                      to={`/profile/${artwork.artist.id}`}
+                      className="text-white text-xs md:text-sm hover:text-orange-200 transition-colors block truncate"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      by {artwork.artist.full_name}
+                    </Link>
                   </div>
                   
                   {/* Like and Comment icons on hover */}
-                  <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex space-x-1">
                     <button
-                      className="bg-white rounded-full p-2 text-gray-700 hover:text-red-500 focus:outline-none"
-                      onClick={() => console.log('Liked', artwork.id)} // Placeholder function
+                      className="bg-white/90 backdrop-blur-sm rounded-full p-1.5 md:p-2 text-gray-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleLike(artwork.id);
+                      }}
+                      title={user ? "Like this artwork" : "Sign in to like"}
+                      aria-label={user ? "Like this artwork" : "Sign in to like"}
                     >
-                      <FcLike size={24} />
+                      <FcLike size={20} className="md:w-6 md:h-6" />
                     </button>
                     <button
-                      className="bg-white rounded-full p-2 text-gray-700 hover:text-blue-500 focus:outline-none ml-2"
-                      onClick={() => console.log('Commented', artwork.id)} // Placeholder function
+                      className="bg-white/90 backdrop-blur-sm rounded-full p-1.5 md:p-2 text-gray-700 hover:text-blue-500 focus:outline-none focus:ring-2 focus:ring-orange-500 shadow-lg"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleComment(artwork.id);
+                      }}
+                      title={user ? "Comment on this artwork" : "Sign in to comment"}
+                      aria-label={user ? "Comment on this artwork" : "Sign in to comment"}
                     >
-                      <FcComments size={24} />
+                      <FcComments size={20} className="md:w-6 md:h-6" />
                     </button>
                   </div>
                 </div>
@@ -180,7 +292,8 @@ export const GalleryPage = () => {
             {!loading && hasMore && (
               <button
                 onClick={fetchArtworks}
-                className="w-full py-2 px-4 bg-orange-500 text-white rounded-lg mt-6"
+                className="w-full py-3 px-6 bg-orange-500 text-white rounded-lg mt-6 hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+                aria-label="Load more artworks"
               >
                 Load More
               </button>
@@ -191,6 +304,12 @@ export const GalleryPage = () => {
 
       {/* Footer */}
       <Footer />  {/* Footer component here */}
+      
+      {/* Onboarding Popup */}
+      <OnboardingPopup
+        isOpen={showOnboarding}
+        onClose={() => setShowOnboarding(false)}
+      />
     </div>
   );
 };

@@ -1,8 +1,10 @@
-import React from 'react';
+import { FC } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import { Header } from '../components/Header';
+import { Footer } from '../components/Footer';
 
-export const AboutPage = () => {
+export const AboutPage: FC = () => {
   const navigate = useNavigate();
   const features = [
     {
@@ -32,13 +34,15 @@ export const AboutPage = () => {
   ];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="min-h-screen pt-20 bg-white"
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="flex-grow pt-20 bg-white"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-16">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">About KalaKriti</h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -92,7 +96,9 @@ export const AboutPage = () => {
             Get Started
           </button>
         </div>
-      </div>
-    </motion.div>
+        </div>
+      </motion.div>
+      <Footer />
+    </div>
   );
 };

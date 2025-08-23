@@ -3,6 +3,8 @@ import { useParams, Link } from 'react-router-dom';
 import { supabase } from '../../lib/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { ArtworkGrid } from '../../components/artwork/ArtworkGrid';
+import { Header } from '../../components/Header';
+import { Footer } from '../../components/Footer';
 import { Edit } from 'lucide-react';
 import { CheckCircle } from 'lucide-react';
 
@@ -21,9 +23,11 @@ export const ProfilePage = () => {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [artworks, setArtworks] = useState([]);
+  const [artworks, setArtworks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [editing, setEditing] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     bio: '',
@@ -65,6 +69,30 @@ export const ProfilePage = () => {
 
         if (artworksError) throw artworksError;
         setArtworks(artworksData);
+
+        // Update verification status based on artwork count
+        if (profileData.is_artist && artworksData.length >= 3) {
+          const { error: updateError } = await supabase
+            .from('profiles')
+            .update({ is_verified: true })
+            .eq('id', id);
+          
+          if (!updateError) {
+            setProfile(prev => prev ? { ...prev, is_verified: true } : null);
+          }
+        }
+
+        // Check if current user is following this profile
+        if (user && user.id !== id) {
+          const { data: followData } = await supabase
+            .from('user_follows')
+            .select('id')
+            .eq('follower_id', user.id)
+            .eq('following_id', id)
+            .single();
+          
+          setIsFollowing(!!followData);
+        }
       } catch (error) {
         console.error('Error fetching profile:', error);
       } finally {
@@ -115,6 +143,37 @@ export const ProfilePage = () => {
     }
   };
 
+  const handleFollow = async () => {
+    if (!user || !id) return;
+    
+    setFollowLoading(true);
+    try {
+      if (isFollowing) {
+        // Unfollow
+        await supabase
+          .from('user_follows')
+          .delete()
+          .eq('follower_id', user.id)
+          .eq('following_id', id);
+        setIsFollowing(false);
+      } else {
+        // Follow
+        await supabase
+          .from('user_follows')
+          .insert({
+            follower_id: user.id,
+            following_id: id
+          });
+        setIsFollowing(true);
+      }
+    } catch (error) {
+      console.error('Error handling follow:', error);
+      alert('Failed to update follow status');
+    } finally {
+      setFollowLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -135,7 +194,9 @@ export const ProfilePage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <div className="flex-grow container mx-auto px-4 py-8 pt-24">
       <div className="max-w-4xl mx-auto">
         {editing ? (
           <form onSubmit={handleSubmit} className="space-y-6">
@@ -230,36 +291,55 @@ export const ProfilePage = () => {
           </form>
         ) : (
           <>
-            <div className="flex justify-between items-start mb-8">
-              <div className="flex items-center space-x-4">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-8 space-y-4 sm:space-y-0">
+              <div className="flex flex-col sm:flex-row sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
                 <img
                   src={profile.avatar_url || '/default-avatar.png'}
                   alt={profile.name}
-                  className="w-20 h-20 rounded-full"
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-full mx-auto sm:mx-0"
                 />
-                <div>
-                  <h1 className="text-3xl font-bold">{profile.name}</h1>
-                  {profile.is_artist && (
-                    <span className="inline-block px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
-                      Artist
-                    </span>
-                  )}
-                  {profile.is_verified && (
-                    <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
-                      <CheckCircle className="w-4 h-4" />
-                      Verified Artist
-                    </span>
-                  )}
+                <div className="text-center sm:text-left">
+                  <h1 className="text-2xl sm:text-3xl font-bold mb-2">{profile.name}</h1>
+                  <div className="flex flex-wrap justify-center sm:justify-start gap-2">
+                    {profile.is_artist && (
+                      <span className="inline-block px-3 py-1 bg-orange-100 text-orange-800 rounded-full text-sm font-medium">
+                        Artist
+                      </span>
+                    )}
+                    {profile.is_verified && (
+                      <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                        <CheckCircle className="w-4 h-4" />
+                        Verified Artist
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
-              {isOwnProfile && (
-                <button
-                  onClick={() => setEditing(true)}
-                  className="p-2 text-gray-600 hover:text-gray-800"
-                >
-                  <Edit className="h-5 w-5" />
-                </button>
-              )}
+              <div className="flex items-center justify-center sm:justify-end space-x-2">
+                {!isOwnProfile && user && (
+                  <button
+                    onClick={handleFollow}
+                    disabled={followLoading}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                      isFollowing
+                        ? 'bg-gray-200 text-gray-700 hover:bg-gray-300 focus:ring-gray-500'
+                        : 'bg-orange-500 text-white hover:bg-orange-600 focus:ring-orange-500'
+                    } disabled:opacity-50`}
+                    aria-label={isFollowing ? 'Unfollow user' : 'Follow user'}
+                  >
+                    {followLoading ? 'Loading...' : isFollowing ? 'Following' : 'Follow'}
+                  </button>
+                )}
+                {isOwnProfile && (
+                  <button
+                    onClick={() => setEditing(true)}
+                    className="p-2 text-gray-600 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-lg"
+                    aria-label="Edit profile"
+                  >
+                    <Edit className="h-5 w-5" />
+                  </button>
+                )}
+              </div>
             </div>
 
             {profile.bio && (
@@ -311,6 +391,8 @@ export const ProfilePage = () => {
           </div>
         )}
       </div>
+      </div>
+      <Footer />
     </div>
   );
 };

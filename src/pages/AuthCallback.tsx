@@ -8,7 +8,9 @@ export const AuthCallback = () => {
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        navigate('/');
+        navigate('/gallery');
+      } else {
+        navigate('/signin');
       }
     });
   }, [navigate]);
