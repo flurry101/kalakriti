@@ -3,11 +3,29 @@ import { ThemeSupa } from '@supabase/auth-ui-shared';
 import { supabase } from '../lib/supabase';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { X } from 'lucide-react';
-import { useState } from 'react';
+import { X, CheckCircle, AlertCircle } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 export const SignInPage = () => {
   const navigate = useNavigate();
+  const [authStatus, setAuthStatus] = useState<'success' | 'error' | null>(null);
+  
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((event) => {
+      if (event === 'SIGNED_IN') {
+        setAuthStatus('success');
+        setTimeout(() => {
+          navigate('/feed');
+        }, 2000);
+      } else if (event === 'SIGNED_OUT') {
+        setAuthStatus('error');
+      }
+    });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, [navigate]);
   const [searchParams] = useState(() => new URLSearchParams(window.location.search));
   const initialView = searchParams.get('view') === 'sign_up' ? 'sign_up' : 'sign_in';
 
@@ -34,6 +52,27 @@ export const SignInPage = () => {
         <div className="mb-6 text-center">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome to KalaKriti</h2>
           <p className="text-gray-600">Sign in or create an account to continue</p>
+          {authStatus && (
+            <div className={`mt-4 p-3 rounded-lg ${
+              authStatus === 'success' 
+                ? 'bg-green-100 text-green-700' 
+                : 'bg-red-100 text-red-700'
+            }`}>
+              <div className="flex items-center gap-2">
+                {authStatus === 'success' ? (
+                  <>
+                    <CheckCircle className="w-5 h-5" />
+                    <span>Successfully authenticated! Redirecting to feed...</span>
+                  </>
+                ) : (
+                  <>
+                    <AlertCircle className="w-5 h-5" />
+                    <span>Authentication failed. Please try again.</span>
+                  </>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         <Auth

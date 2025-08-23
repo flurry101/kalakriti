@@ -70,7 +70,13 @@ export const HeroSection: React.FC = () => {
                 Join the Movement
                 <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
-
+              <Link 
+                to="/gallery" 
+                className="group border-2 border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center justify-center transition-all"
+              >
+                Browse as Guest
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </motion.div>
 
             {/* Stats */}

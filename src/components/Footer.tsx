@@ -4,13 +4,11 @@ import {
   Heart, 
   Mail, 
   MapPin, 
-  Facebook, 
-  Twitter, 
-  Instagram, 
+  Github,
   Youtube,
   Palette,
   Users,
-  Shield
+  Info // Info icon for the "About" section
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -25,16 +23,11 @@ export const Footer: FC = () => {
     community: [
       { name: 'Join Movement', href: '/signin?view=sign_up' },
     ],
-    support: [
-      { name: 'About', href: '/about' },
-    ]
   };
 
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Instagram, href: '#', label: 'Instagram' },
-    { icon: Youtube, href: '#', label: 'YouTube' }
+    { icon: Github, href: '#', label: 'GitHub' },
+    { icon: Youtube, href: '#', label: 'YouTube' },
   ];
 
   return (
@@ -52,7 +45,7 @@ export const Footer: FC = () => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-8">
         {/* Main Footer Content */}
-        <div className="grid lg:grid-cols-5 gap-8 mb-12">
+        <div className="grid lg:grid-cols-4 gap-8 mb-12">
           {/* Brand Section */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -134,13 +127,20 @@ export const Footer: FC = () => {
               ))}
             </ul>
           </motion.div>
-
         </div>
 
-        {/* Social Links & Copyright */}
+        {/* Grey Line & Social Links */}
         <div className="pt-8 border-t border-gray-800">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex space-x-4 mb-4 md:mb-0">
+          <div className="flex justify-between items-center">
+            {/* Left side (Social Links + About) */}
+            <div className="flex space-x-4">
+              <Link
+                to="/about"
+                className="text-gray-400 hover:text-white transition-colors group flex items-center"
+              >
+                <Info className="w-5 h-5 mr-2 text-orange-400" />
+                <span className="group-hover:text-orange-400">About</span>
+              </Link>
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -152,6 +152,8 @@ export const Footer: FC = () => {
                 </a>
               ))}
             </div>
+
+            {/* Right side (Copyright) */}
             <p className="text-gray-400 text-sm">
               © {new Date().getFullYear()} KalaKriti. All rights reserved.
             </p>

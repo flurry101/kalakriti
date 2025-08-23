@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Menu, X, Heart, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { AuthButtons } from './AuthButtons';
 
 const navItems = [

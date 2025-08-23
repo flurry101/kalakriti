@@ -12,6 +12,10 @@ import { AuthProvider } from './context/AuthContext';
 import { SignInPage } from './pages/SignInPage';
 import { AuthCallback } from './pages/AuthCallback';
 import { AboutPage } from './pages/AboutPage';
+import { GalleryPage } from './pages/artwork/GalleryPage';
+import { ArtworkDetailPage } from './pages/artwork/ArtworkDetailPage';
+import { ArtworkUpload } from './components/artwork/ArtworkUpload';
+import { ProfilePage } from './pages/profile/ProfilePage';
 
 function MainContent() {
   const [showSplash, setShowSplash] = useState(true);
@@ -60,6 +64,10 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/signin" element={<SignInPage />} />
+          <Route path="/gallery" element={<GalleryPage />} />
+          <Route path="/artwork/new" element={<ArtworkUpload />} />
+          <Route path="/artwork/:id" element={<ArtworkDetailPage />} />
+          <Route path="/profile/:id" element={<ProfilePage />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

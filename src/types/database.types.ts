@@ -3,9 +3,12 @@ export interface Profile {
   username: string
   full_name: string
   avatar_url: string | null
-  art_style: string[]
+  art_styles: string[]
   location: string
   created_at: string
+  artworks_count: number
+  followers_count: number
+  following_count: number
 }
 
 export interface Artwork {
@@ -18,6 +21,8 @@ export interface Artwork {
   style: string
   region: string
   created_at: string
+  likes_count: number
+  comments_count: number
 }
 
 export interface Database {
