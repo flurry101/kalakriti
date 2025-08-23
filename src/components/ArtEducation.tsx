@@ -238,7 +238,7 @@ export function ArtEducation({ onBackToHome }: ArtEducationProps) {
             className="text-center mb-12"
           >
             <h2 className="text-4xl font-bold mb-4 text-gray-900">
-              Learning Resources
+              Learning Resources (Coming Soon)
             </h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
               Comprehensive educational materials to deepen your understanding of Indian folk art

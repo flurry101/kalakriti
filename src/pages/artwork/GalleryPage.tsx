@@ -103,21 +103,35 @@ export const GalleryPage = () => {
 
   // Check if user needs onboarding
   useEffect(() => {
+    let isMounted = true;
+    
     const checkUserProfile = async () => {
-      if (user) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('username, full_name')
-          .eq('id', user.id)
-          .single();
-        
-        if (!profile || !profile.username || !profile.full_name) {
-          setShowOnboarding(true);
+      if (user && isMounted) {
+        try {
+          const { data: profile } = await supabase
+            .from('profiles')
+            .select('username, full_name')
+            .eq('id', user.id)
+            .single();
+          
+          if (isMounted && (!profile || !profile.username || !profile.full_name)) {
+            setShowOnboarding(true);
+          }
+        } catch (error) {
+          console.error('Error checking profile:', error);
         }
+      } else if (!user && isMounted) {
+        setShowOnboarding(false);
       }
     };
 
-    checkUserProfile();
+    // Add a small delay to prevent rapid state changes
+    const timeoutId = setTimeout(checkUserProfile, 500);
+
+    return () => {
+      isMounted = false;
+      clearTimeout(timeoutId);
+    };
   }, [user]);
 
   const handleSearch = (query: string) => {

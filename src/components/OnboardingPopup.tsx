@@ -63,7 +63,11 @@ export const OnboardingPopup: React.FC<OnboardingPopupProps> = ({ isOpen, onClos
         });
 
       if (error) throw error;
-      onClose();
+      
+      // Close the popup after successful save
+      setTimeout(() => {
+        onClose();
+      }, 500);
     } catch (error) {
       console.error('Error updating profile:', error);
       alert('Failed to save profile. Please try again.');
