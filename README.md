@@ -16,18 +16,27 @@ Welcome to **KalaKriti**, a digital platform dedicated to preserving, promoting,
     - [🔎 **Search \& Filters**](#-search--filters)
     - [💬 **Community Engagement**](#-community-engagement)
   - [💻 **Technology Stack**](#-technology-stack)
+  - [🛣️ **Workflow**](#️-workflow)
+  - [🧰 **Prerequisites**](#-prerequisites)
   - [🚀 **Getting Started**](#-getting-started)
     - [1. Clone the repository:](#1-clone-the-repository)
     - [2. Install dependencies:](#2-install-dependencies)
     - [3. Set up Supabase:](#3-set-up-supabase)
     - [4. Start the development server:](#4-start-the-development-server)
     - [5. Build for production:](#5-build-for-production)
+  - [🧪 **Development Tips**](#-development-tips)
   - [🤝 **Contributions**](#-contributions)
   - [🔒 **License**](#-license)
 
 ---
 
 ## 🚀 **Introduction**
+
+<p align="center">
+
+![Icon](/mightWork.gif)
+
+</p>
 
 **Kalakriti** is a dynamic platform that celebrates Indian folk art and gives artists the tools they need to preserve and share their work with the world. We enable artists to:
 
@@ -78,6 +87,20 @@ Our goal is to create a **sustainable ecosystem** where art and culture thrive i
 
 ---
 
+## 🛣️ **Workflow**
+
+
+![arch](image.png)
+
+---
+
+## 🧰 **Prerequisites**
+
+* Node.js 18+ and npm 9+
+* A Supabase project (for Auth, Database, and Storage)
+
+---
+
 ## 🚀 **Getting Started**
 
 ### 1. Clone the repository:
@@ -95,13 +118,13 @@ npm install
 
 ### 3. Set up Supabase:
 
-* Create a project on [Supabase](https://supabase.io/).
-* Set up authentication and database tables.
-* Add Supabase credentials (URL, API Key) to your `.env` file.
+* Create a project on [Supabase](https://supabase.com/).
+* In the project settings, copy your Project URL and anon public key.
+* Create a `.env` file in the project root with the following keys (Vite requires the `VITE_` prefix):
 
 ```bash
-SUPABASE_URL=your_supabase_url
-SUPABASE_KEY=your_supabase_key
+VITE_SUPABASE_URL=your_supabase_url
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_public_key
 ```
 
 ### 4. Start the development server:
@@ -117,6 +140,13 @@ The app will be available at `http://localhost:5173`.
 ```bash
 npm run build
 ```
+---
+
+## 🧪 **Development Tips**
+
+- **Environment variables**: Vite exposes variables prefixed with `VITE_` via `import.meta.env`.
+- **Supabase client**: Initialized in `src/lib/supabaseClient.ts`.
+- **Routing**: Implemented with `react-router-dom` under `src/pages/`.
 
 ---
 
